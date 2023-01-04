@@ -5,7 +5,6 @@ package models
 const (
 	OrderTime  = "time"
 	OrderScore = "score"
-	QueueName  = "createPostQueue"
 )
 
 // ParamSignUp 注册请求参数
