@@ -9,13 +9,14 @@
 - 根据帖子分数（由发帖时间和点赞数目综合决定）显示帖子
 ## 技术栈
 - gin框架
+- mysql
+- redis
 - rabbitmq消息队列
+- swagger编写接口文档
 - validator库参数校验
 - zap日志库
 - 雪花算法生成用户id
 - viper配置管理库
-- mysql
-- redis
 - air热重载
 - 基本sql命令建表
 - makefile编译go文件
