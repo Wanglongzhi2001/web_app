@@ -9,6 +9,16 @@ import (
 )
 
 // CreatePostHandler 创建帖子
+// @Summary 发布帖子
+// @Description 根据用户传入的帖子信息以及请求上下文得到的用户id创建帖子
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param object query models.Post false "查询参数"
+// @Security ApiKeyAuth
+// @Success 200 {string} json "{"code":1000,"msg":"success","data":null}"
+// @Router /post [post]
 func CreatePostHandler(c *gin.Context) {
 	// 1. 获取参数及参数的校验
 	// c.ShouldBindJSON() // validator --> binding tag
@@ -37,6 +47,16 @@ func CreatePostHandler(c *gin.Context) {
 }
 
 // GetPostDetailHandler 获取帖子详情
+// @Summary 获取帖子详情
+// @Description 根据传入的帖子id获取帖子详情
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string true "Bearer 用户令牌"
+// @Param id path int true "帖子ID"
+// @Security ApiKeyAuth
+// @Success 200 {object} models.ApiPostDetail
+// @Router /post/{id} [get]
 func GetPostDetailHandler(c *gin.Context) {
 	// 1. 获取路由参数(帖子id)
 	postIDStr := c.Param("id")

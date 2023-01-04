@@ -1,0 +1,137 @@
+basePath: /api/v1
+definitions:
+  models.ApiPostDetail:
+    properties:
+      author_id:
+        type: integer
+      author_name:
+        type: string
+      community:
+        allOf:
+        - $ref: '#/definitions/models.CommunityDetail'
+        description: 使得返回的与community有关的字段会整齐的放在一起
+      community_id:
+        type: integer
+      content:
+        type: string
+      create_time:
+        type: string
+      id:
+        description: json加上string是为了防止id值大于2^53 - 1时导致的js数字失真，int64最大值为2^63 - 1
+        example: "0"
+        type: string
+      status:
+        type: integer
+      title:
+        type: string
+      vote_num:
+        type: integer
+    required:
+    - community_id
+    - content
+    - title
+    type: object
+  models.CommunityDetail:
+    properties:
+      create_time:
+        type: string
+      id:
+        type: integer
+      introduction:
+        description: 加上omitempty当字段为空时便不展示(json序列化的小技巧)
+        type: string
+      name:
+        type: string
+    type: object
+host: localhost:8081
+info:
+  contact:
+    email: 583087864@qq.com
+    name: wlz
+    url: https://wanglongzhi2001.gitee.io/
+  description: swagger编写接口文档测试.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: wlz的swagger文档
+  version: "1.0"
+paths:
+  /post:
+    post:
+      consumes:
+      - application/json
+      description: 根据用户传入的帖子信息以及请求上下文得到的用户id创建帖子
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - in: query
+        name: author_id
+        type: integer
+      - in: query
+        name: community_id
+        required: true
+        type: integer
+      - in: query
+        name: content
+        required: true
+        type: string
+      - in: query
+        name: create_time
+        type: string
+      - description: json加上string是为了防止id值大于2^53 - 1时导致的js数字失真，int64最大值为2^63 - 1
+        example: "0"
+        in: query
+        name: id
+        type: string
+      - in: query
+        name: status
+        type: integer
+      - in: query
+        name: title
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":1000,"msg":"success","data":null}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 发布帖子
+      tags:
+      - 帖子相关接口
+  /post/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 根据传入的帖子id获取帖子详情
+      parameters:
+      - description: Bearer 用户令牌
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 帖子ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ApiPostDetail'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取帖子详情
+      tags:
+      - 帖子相关接口
+swagger: "2.0"

@@ -1,0 +1,210 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "swagger编写接口文档测试.",
+        "title": "wlz的swagger文档",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "wlz",
+            "url": "https://wanglongzhi2001.gitee.io/",
+            "email": "583087864@qq.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8081",
+    "basePath": "/api/v1",
+    "paths": {
+        "/post": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "根据用户传入的帖子信息以及请求上下文得到的用户id创建帖子",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "帖子相关接口"
+                ],
+                "summary": "发布帖子",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "author_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "community_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "content",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "create_time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "0",
+                        "description": "json加上string是为了防止id值大于2^53 - 1时导致的js数字失真，int64最大值为2^63 - 1",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "title",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":1000,\"msg\":\"success\",\"data\":null}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/post/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "根据传入的帖子id获取帖子详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "帖子相关接口"
+                ],
+                "summary": "获取帖子详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer 用户令牌",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "帖子ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ApiPostDetail"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.ApiPostDetail": {
+            "type": "object",
+            "required": [
+                "community_id",
+                "content",
+                "title"
+            ],
+            "properties": {
+                "author_id": {
+                    "type": "integer"
+                },
+                "author_name": {
+                    "type": "string"
+                },
+                "community": {
+                    "description": "使得返回的与community有关的字段会整齐的放在一起",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.CommunityDetail"
+                        }
+                    ]
+                },
+                "community_id": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "create_time": {
+                    "type": "string"
+                },
+                "id": {
+                    "description": "json加上string是为了防止id值大于2^53 - 1时导致的js数字失真，int64最大值为2^63 - 1",
+                    "type": "string",
+                    "example": "0"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "vote_num": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.CommunityDetail": {
+            "type": "object",
+            "properties": {
+                "create_time": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "introduction": {
+                    "description": "加上omitempty当字段为空时便不展示(json序列化的小技巧)",
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

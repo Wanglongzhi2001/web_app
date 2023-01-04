@@ -1,12 +1,14 @@
 package routes
 
 import (
+	"github.com/gin-gonic/gin"
+	swaggerfiles "github.com/swaggo/files"
+	gs "github.com/swaggo/gin-swagger"
 	"net/http"
 	"web_app/controllers"
+	_ "web_app/docs" // 千万不要忘了导入把你上一步生成的docs
 	"web_app/logger"
 	"web_app/middleware"
-
-	"github.com/gin-gonic/gin"
 )
 
 func SetupRouter(mode string) *gin.Engine {
@@ -15,7 +17,7 @@ func SetupRouter(mode string) *gin.Engine {
 	}
 	r := gin.New()
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
-
+	r.GET("/swagger/*any", gs.WrapHandler(swaggerfiles.Handler))
 	v1 := r.Group("api/v1")
 	// 注册业务路由
 	v1.POST("/SignUp", controllers.SignUpHandler)

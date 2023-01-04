@@ -21,7 +21,21 @@ import (
 	"go.uber.org/zap"
 )
 
-// Go Web开发通用脚手架
+// @title           wlz的swagger文档
+// @version         1.0
+// @description     swagger编写接口文档测试.
+// @termsOfService  http://swagger.io/terms/
+
+// @contact.name   wlz
+// @contact.url    https://wanglongzhi2001.gitee.io/
+// @contact.email  583087864@qq.com
+
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host      localhost:8081
+// @BasePath  /api/v1
+
 func main() {
 	// 1. 加载配置
 	if err := settings.Init(); err != nil {
