@@ -12,7 +12,7 @@ var node *sf.Node
 
 func Init() (err error) {
 	var st time.Time
-	st, err = time.Parse("2006-01-02", viper.GetString("snowflake.startTIme"))
+	st, err = time.Parse("2006-01-02", viper.GetString("snowflake.startTime"))
 	if err != nil {
 		return
 	}
@@ -24,12 +24,3 @@ func Init() (err error) {
 func GenID() int64 {
 	return node.Generate().Int64()
 }
-
-//func main() {
-//	if err := Init(); err != nil {
-//		fmt.Printf("init failed, err:%v\n", err)
-//		return
-//	}
-//	id := GenID()
-//	fmt.Println(id)
-//}

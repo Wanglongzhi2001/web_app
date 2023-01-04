@@ -1,11 +1,13 @@
 package controllers
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"strconv"
 	"web_app/logic"
 	"web_app/models"
+	RabbitMQ "web_app/rabbitmq"
 )
 
 // CreatePostHandler 创建帖子
@@ -27,11 +29,19 @@ func CreatePostHandler(c *gin.Context) {
 	}
 	p.AuthorID = userID
 	// 2. 创建帖子
-	if err = logic.CreatePost(p); err != nil {
-		zap.L().Error("logic.CreatePost failed", zap.Error(err))
-		ResponseError(c, CodeServerBusy)
-		return
+	rabbitmq := RabbitMQ.NewRabbitMQSimple(models.QueueName)
+	defer rabbitmq.Destroy()
+	byteMessage, err := json.Marshal(p)
+	if err != nil {
+		zap.L().Error("生产消息失败！", zap.Error(err))
 	}
+	rabbitmq.PublishSimple(string(byteMessage))
+
+	//if err = logic.CreatePost(p); err != nil {
+	//	zap.L().Error("logic.CreatePost failed", zap.Error(err))
+	//	ResponseError(c, CodeServerBusy)
+	//	return
+	//}
 	// 3. 返回响应
 	ResponseSuccess(c, nil)
 }
