@@ -11,7 +11,7 @@
 - gin框架
 - mysql
 - redis
-- rabbitmq消息队列
+- RabbitMQ消息队列
 - swagger编写接口文档
 - validator库参数校验
 - zap日志库
