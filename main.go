@@ -10,6 +10,7 @@ import (
 	"syscall"
 	"time"
 	"web_app/controllers"
+	"web_app/controllers/rpc"
 	"web_app/dao/mysql"
 	"web_app/dao/redis"
 	"web_app/logger"
@@ -91,7 +92,7 @@ func main() {
 			log.Fatalf("listen: %s\n", err)
 		}
 	}()
-
+	rpc.RegisterAndServe()
 	// 等待中断信号来优雅地关闭服务器，为关闭服务器操作设置一个5秒的超时
 	quit := make(chan os.Signal, 1) // 创建一个接收信号的通道
 	// kill 默认会发送 syscall.SIGTERM 信号
