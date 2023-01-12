@@ -12,6 +12,7 @@
 - mysql
 - redis
 - RabbitMQ消息队列
+- gRPC远程调用
 - swagger编写接口文档
 - validator库参数校验
 - zap日志库
